@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block body %}
+<ul class="nav justify-content-center" style="padding-top: 1em;">
+  <li class="nav-item">
+    <a class="btn btn-primary" href="{{ url_for('notes_create') }}">Create</a>
+  </li>
+</ul>
+{% for note in notes %}
+<div class="card my-3">
+  <div class="card-body">
+    <h4 class="card-title">{{ note.title }}</h4>
+    <div class="card-text my-3">
+      {{ note.description }}
+      <a href="{{ url_for('notes_edit', note_id=note.id) }}" class="btn btn-primary" style="display:inline">Edit Note</a>
+      <form action="{{ url_for('notes_delete', note_id=note.id) }}" method="post" style="display:inline; float: right;">
+        <button type="submit" class="btn btn-danger btn-sm">Delete Note</button>
+      </form>
+    </div>
+    <div class="card-footer text-muted">
+      Tags: 
+      {% for t in note.tags %}
+        <a href="{{ url_for('tags_view', tag_name=t.name) }}">{{ t.name }}</a>
+        <form action="{{ url_for('tags_delete', tag_id=t.id) }}" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-danger btn-sm">Delete Tag</button>
+        </form>        
+      {% endfor %}
+      <br>
+      Last update: {{ note.updated_date }}
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
